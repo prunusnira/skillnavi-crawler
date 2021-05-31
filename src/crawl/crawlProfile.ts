@@ -4,12 +4,10 @@ import Profile from './data/profileData';
 import upload from './upload';
 
 const crawlProfile = () => {
-    console.log("[Skill Navigator] Initializing Profile Update");
-    //$("#current").text("Initializing Profile Update");
+    console.log("[Skill Navigator] Initializing Profile Update")
     axios.get(`https://p.eagate.573.jp/game/gfdm/gitadora_highvoltage/p/playdata/profile.html`)
     .then(html => {
-        console.log("[GITADORA Info] Profile Data Received");
-        //$("#current").text("Profile Data Received");
+        console.log("[Skill Navigator] Profile Data Received")
 
         const $ = cheerio.load(html.data)
 
@@ -48,9 +46,8 @@ const crawlProfile = () => {
             crawlToken: (window as any).crawlToken
         }
         
-        console.log("[GITADORA Info] Uploading Profile...");
-        //$("#current").text("Uploading Profile...");
-        upload(JSON.stringify(profileData), 'profile');
+        console.log("[GITADORA Info] Uploading Profile...")
+        upload(JSON.stringify(profileData), 'profile')
     })
 }
 

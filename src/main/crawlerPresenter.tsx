@@ -40,16 +40,7 @@ const CrawlerPresenter = (props: Props) => {
                     </ItemRow>
                 </BodyHeader>
 
-                <BodyContent style={{display: props.isUserLogined ? 'none' : 'block'}}>
-                    <BodyHeader>
-                        <h3>Not Logined</h3>
-                    </BodyHeader>
-                    <BodyContent>
-                        {`${(text.crawler.notlogin as any)[props.lang]}`}
-                    </BodyContent>
-                </BodyContent>
-
-                <BodyContent style={{display: props.isUserLogined ? 'block' : 'none'}}>
+                <BodyContent>
                     {/* 주의사항 */}
                     <ItemRow>
                         <BodyHeader>

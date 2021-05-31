@@ -58,6 +58,16 @@ const widthSize = (size: number) => {
 export const Container = styled.div`
     max-width: 1200px;
     width: 100%;
+
+	height: 100%;
+	max-height: 100%;
+	position:fixed;
+	z-index:10000;
+	background-color:rgba(255,255,255,0.9);
+	text-align:center;
+	display: flex;
+	flex-direction: column;
+	padding: 10px;
 `
 
 export const BodyHeader = styled.div`

@@ -1,43 +1,80 @@
-const crawlTarget = (gtype: string, delay: number) => {
-    console.log("[Simple update] Collecting data");
-    //$("#current").text("[Simple update] Collecting data");
-    
-    console.log("[Simple update] Collecting HOT data");
-    //$("#current").text("[Simple update] Collecting HOT data");
-    var hot = runGetTargetSimple(gtype, 1);
-    
-    console.log("[Simple update] Collecting OTHER data");
-    //$("#current").text("[Simple update] Collecting OTHER data");
-    var other = runGetTargetSimple(gtype, 0);
-    
-    jsonRoot.music = new Object();
-    jsonRoot.music.gf = new Array();
-    jsonRoot.music.dm = new Array();
-    jsonRoot.crawlToken = crawlToken;
-    
-    if(gtype == 'gf') {
-        for(var i = 0; i < hot.length; i++) {
-            jsonRoot.music.gf.push(hot[i]);
-        }
-        for(var i = 0; i < other.length; i++) {
-            jsonRoot.music.gf.push(other[i]);
-        }
+import crawlFromUrlList from "./crawlFromUrlList"
+import UrlData from "./data/urlData"
+import getTargetUrl from "./runner/getTargetUrl"
+
+const crawlTarget = (
+    gtype: string,
+    delay: number
+) => {
+    // url 리스트를 가져온 후 url 목록에 대한 곡 파싱 수행
+    collectTargetUrl(gtype)!
+    .then(list => {
+        crawlFromUrlList(list, delay)
+    })
+}
+
+const collectTargetUrl = (gtype: string) => {
+    // getTargetUrl에서 url 목록 수집
+    let urlList = new Array<UrlData>()
+
+    if(gtype === 'all') {
+        return getTargetUrl('gf', 1)
+        .then(list => {
+            urlList = [...urlList, ...list]
+        })
+        .then(_ => {
+            return getTargetUrl('gf', 0)
+        })
+        .then(list => {
+            urlList = [...urlList, ...list]
+        })
+        .then(_ => {
+            return getTargetUrl('dm', 1)
+        })
+        .then(list => {
+            urlList = [...urlList, ...list]
+        })
+        .then(_ => {
+            return getTargetUrl('dm', 0)
+        })
+        .then(list => {
+            urlList = [...urlList, ...list]
+        })
+        .then(_ => {
+            return urlList
+        })
     }
-    else if(gtype == 'dm') {
-        for(var i = 0; i < hot.length; i++) {
-            jsonRoot.music.dm.push(hot[i]);
-        }
-        for(var i = 0; i < other.length; i++) {
-            jsonRoot.music.dm.push(other[i]);
-        }
+    else if(gtype === 'gf') {
+        return getTargetUrl('gf', 1)
+        .then(list => {
+            urlList = [...urlList, ...list]
+        })
+        .then(_ => {
+            return getTargetUrl('gf', 0)
+        })
+        .then(list => {
+            urlList = [...urlList, ...list]
+        })
+        .then(_ => {
+            return urlList
+        })
     }
-    
-    console.log("[Simple update] Uploading data");
-    $("#current").text("[Simple update] Uploading data");
-    upload(JSON.stringify(jsonRoot), 'simple');
-    
-    jsonRoot = new Object();
-    crawlProfile();
+    else if(gtype === 'dm') {
+        return getTargetUrl('dm', 1)
+        .then(list => {
+            urlList = [...urlList, ...list]
+        })
+        .then(_ => {
+            return getTargetUrl('dm', 0)
+        })
+        .then(list => {
+            urlList = [...urlList, ...list]
+        })
+        .then(_ => {
+            return urlList
+        })
+    }
+    return null
 }
 
 export default crawlTarget

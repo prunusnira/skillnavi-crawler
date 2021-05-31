@@ -1,11 +1,17 @@
 import * as cheerio from 'cheerio'
+import MusicData from './data/musicData';
 import PatternData from './data/patternData';
 
-const onSongSuccess = (gtype: string, data: string) => {
+const onSongSuccess = (data: string) => {
     const $ = cheerio.load(data)
 
-    // Song title
     const name = $('div.live_title').text()
+
+    const music: MusicData = {
+        musictitle: name,
+        crawlToken: (window as any).crawlToken,
+        data: [],
+    }
 
     const divs = $('div.md_list_contents')
 
@@ -27,7 +33,7 @@ const onSongSuccess = (gtype: string, data: string) => {
         }
     })
 
-    if(gtype === 'gf') {
+    if(gfExist > 0 || baExist > 0) {
         var gfon = false
         var baon = false
         var ptcodelist = new Array<number>()
@@ -56,6 +62,19 @@ const onSongSuccess = (gtype: string, data: string) => {
         }
 
         $(divs).each((i, v) => {
+            const ptData: PatternData = {
+                ptcode: 0,
+                level: 0,
+                playcount: 0,
+                clearcount: 0,
+                clearstat: '',
+                rank: '',
+                rate: '',
+                score: 0,
+                combo: 0,
+                meter: ''
+            }
+
             const table = $(v).children('table')
             const levels = table.children('thead').children('tr')
 
@@ -67,69 +86,55 @@ const onSongSuccess = (gtype: string, data: string) => {
                 case 4: case 8: diffstr = 'diff_MASTER'; break;
             }
 
-            const jsonGf: PatternData = {
-                ptcode: ptcodelist[i],
-                level: parseInt($(levels).children('th.'+diffstr).children('div.'+diffstr).children('div.diff_area').get(0).innerHTML),
-                playcount: 0,
-                clearcount: 0,
-                clearstat: '',
-                rank: '',
-                rate: '',
-                score: 0,
-                combo: 0,
-                meter: '',
-            }
-
             const body = table.children('tbody').children('tr')
             
             // 성과 데이터
             $(body).each((l,vv) => {
                 switch(l) {
                 case 0:
-                    const playcount = $(vv).children('td').get(1).innerHTML.split(' ')[0];
-                    jsonGf.playcount = playcount;
+                    const playcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
+                    ptData.playcount = playcount
                     break
                 case 1:
-                    const clearcount = $(vv).children('td').get(1).innerHTML.split(' ')[0];
-                    jsonGf.clearcount = clearcount;
+                    const clearcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
+                    ptData.clearcount = clearcount
                     break
                 case 2:
                     $(vv).children('td').each((zz,zx) => {
                         if(zz == 1)
-                            jsonGf.clearstat = $(zx).attr('class')!.split(' ')[2];
+                            ptData.clearstat = $(zx).attr('class')!.split(' ')[2]
                     })
                     
                     $(vv).children('td').each((zz,zx) => {
                         if(zz == 2)
-                            jsonGf.rank = $(zx).attr('class')!.split(' ')[2];
+                            ptData.rank = $(zx).attr('class')!.split(' ')[2]
                     });
                     break
                 case 3:
-                    jsonGf.rate = $(vv).children('td').get(1).innerHTML
+                    ptData.rate = $(vv).children('td').get(1).innerHTML
                     break
                 case 4:
-                    jsonGf.score = parseInt($(vv).children('td').get(1).innerHTML)
+                    ptData.score = parseInt($(vv).children('td').get(1).innerHTML)
                     break
                 case 5:
-                    jsonGf.combo = parseInt($(this).children('td').get(1).innerHTML)
+                    ptData.combo = parseInt($(this).children('td').get(1).innerHTML)
                     break
                 }
-            });
+            })
             
-            let meter = '';
-            const ul = $(this).children('div').children('div').children('ul').children('li');
+            let meter = ''
+            const ul = $(this).children('div').children('div').children('ul').children('li')
             $(ul).each((l, vv) => {
-                var str = $(vv).attr('class')!.split(' ')[1];
-                meter += str[str.length - 1];
-            });
+                var str = $(vv).attr('class')!.split(' ')[1]
+                meter += str[str.length - 1]
+            })
             
-            jsonGf.meter = meter;
+            ptData.meter = meter
             
-            //jsonMusic.data.push(jsonGf);
-            // 리스트에 추가를 해야하는데...
+            music.data.push(ptData)
         });
     }
-    else if(gtype == 'dm') {
+    else if(dmExist > 0) {
         const ptcodelist = new Array<number>()
         for(var i = 0; i < divlist.length; i++) {
             if(divlist[i] == 'diff_BASIC') ptcodelist.push(9)
@@ -139,6 +144,19 @@ const onSongSuccess = (gtype: string, data: string) => {
         }
         
         $(divs).each((i, v) => {
+            const ptData: PatternData = {
+                ptcode: 0,
+                level: 0,
+                playcount: 0,
+                clearcount: 0,
+                clearstat: '',
+                rank: '',
+                rate: '',
+                score: 0,
+                combo: 0,
+                meter: ''
+            }
+
             const table = $(this).children('table')
             const levels = table.children('thead').children('tr')
 
@@ -149,73 +167,54 @@ const onSongSuccess = (gtype: string, data: string) => {
                 case 11: diffstr = 'diff_EXTREME'; break;
                 case 12: diffstr = 'diff_MASTER'; break;
             }
-
-            const jsonDm: PatternData = {
-                ptcode: ptcodelist[i],
-                level: parseInt($(levels).children('th.'+diffstr).children('div.'+diffstr).children('div.diff_area').get(0).innerHTML),
-                playcount: 0,
-                clearcount: 0,
-                clearstat: '',
-                rank: '',
-                rate: '',
-                score: 0,
-                combo: 0,
-                meter: '',
-            }
             
             const body = $(this).children('table').children('tbody').children('tr')
 
             $(body).each((l,vv) => {
                 switch(l) {
                 case 0:
-                    jsonDm.playcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
+                    ptData.playcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
                     break
                 case 1:
-                    jsonDm.clearcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
+                    ptData.clearcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
                     break
                 case 2:
                     $(vv).children('td').each((zz,zx) => {
                         if(zz == 1)
-                            jsonDm.clearstat = $(zx).attr('class')!.split(' ')[2];
+                            ptData.clearstat = $(zx).attr('class')!.split(' ')[2];
                     });
                     
                     $(this).children('td').each((zz,zx) => {
                         if(zz == 2)
-                            jsonDm.rank = $(zx).attr('class')!.split(' ')[2];
+                            ptData.rank = $(zx).attr('class')!.split(' ')[2];
                     });
                     break
                 case 3:
-                    jsonDm.rate = $(vv).children('td').get(1).innerHTML
+                    ptData.rate = $(vv).children('td').get(1).innerHTML
                     break
                 case 4:
-                    jsonDm.score = $(vv).children('td').get(1).innerHTML
+                    ptData.score = $(vv).children('td').get(1).innerHTML
                     break
                 case 5:
-                    jsonDm.combo = $(vv).children('td').get(1).innerHTML
+                    ptData.combo = $(vv).children('td').get(1).innerHTML
                     break
                 }
             })
             
-            let meter = '';
+            let meter = ''
             const ul = $(this).children('div').children('div').children('ul').children('li')
             $(ul).each((l, vv) => {
                 var str = $(vv).attr('class')!.split(' ')[1]
                 meter += str[str.length - 1]
             })
             
-            jsonDm.meter = meter
-            
-            //jsonMusic.data.push(jsonDm);
-        });
+            ptData.meter = meter
+
+            music.data.push(ptData)
+        })
     }
-    if(gtype === "dm") {
-        jsonRoot.music.dm.push(jsonMusic);
-    }
-    else if(gtype === "gf") {
-        jsonRoot.music.gf.push(jsonMusic);
-    }
-    console.log("Collected: "+name);
-    //$("#current").text("Collected: "+name);
+    console.log("Collected: "+name)
+    return music
 }
 
 export default onSongSuccess

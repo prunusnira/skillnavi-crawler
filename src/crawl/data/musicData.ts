@@ -1,9 +1,9 @@
 import PatternData from "./patternData"
 
 type MusicData = {
+    musictitle: string,
     crawlToken: string,
-    gf: Array<PatternData>,
-    dm: Array<PatternData>,
+    data: Array<PatternData>,
 }
 
 export default MusicData
