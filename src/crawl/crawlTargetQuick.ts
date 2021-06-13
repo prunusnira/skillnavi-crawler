@@ -1,71 +1,105 @@
 import crawlProfile from "./crawlProfile"
+import CrawlData from "./data/crawlData"
 import MusicData from "./data/musicData"
 import getTargetSimple from "./runner/getTargetSimple"
 import upload from "./upload"
 
-const crawlTargetQuick = (gtype: string, delay: number) => {
-    const skillData = new Array<MusicData>()
+const crawlTargetQuick = (
+    gtype: string,
+    delay: number,
+    vtype: number,
+    setCurrent: (s: string) => void,
+    setBtnDisabled: (b: boolean) => void
+) => {
+    const skillData: CrawlData = {
+        crawlToken: (window as any).crawlToken,
+        musicData: []
+    }
 
     console.log("[Simple update] Collecting data")
+    setCurrent('Collecting Data... Initiating')
 
     if(gtype === 'all') {
-        getTargetSimple('gf', 1)
+        setCurrent('Collecting URL... GF Hot')
+        getTargetSimple('gf', 1, vtype)
         .then(data => {
-            skillData.push(data)
+            data.forEach(d => {
+                skillData.musicData.push(d)
+            })
         })
         .then(_ => {
-            return getTargetSimple('gf', 0)
+            setCurrent('Collecting URL... GF Other')
+            return getTargetSimple('gf', 0, vtype)
         })
         .then(data => {
-            skillData.push(data)
+            data.forEach(d => {
+                skillData.musicData.push(d)
+            })
         })
         .then(_ => {
-            return getTargetSimple('dm', 1)
+            setCurrent('Collecting URL... DM Hot')
+            return getTargetSimple('dm', 1, vtype)
         })
         .then(data => {
-            skillData.push(data)
+            data.forEach(d => {
+                skillData.musicData.push(d)
+            })
         })
         .then(_ => {
-            return getTargetSimple('dm', 0)
+            setCurrent('Collecting URL... DM Other')
+            return getTargetSimple('dm', 0, vtype)
         })
         .then(data => {
-            skillData.push(data)
+            data.forEach(d => {
+                skillData.musicData.push(d)
+            })
         })
         .then(_ => {
-            upload(JSON.stringify(skillData), 'simple')
-            crawlProfile()
+            upload(JSON.stringify(skillData), 'simple', vtype, setCurrent, setBtnDisabled)
+            crawlProfile(vtype, setCurrent, setBtnDisabled)
         })
     }
     else if(gtype === 'gf') {
-        getTargetSimple('gf', 1)
+        setCurrent('Collecting URL... GF Hot')
+        getTargetSimple('gf', 1, vtype)
         .then(data => {
-            skillData.push(data)
+            data.forEach(d => {
+                skillData.musicData.push(d)
+            })
         })
         .then(_ => {
-            return getTargetSimple('gf', 0)
+            setCurrent('Collecting URL... GF Other')
+            return getTargetSimple('gf', 0, vtype)
         })
         .then(data => {
-            skillData.push(data)
+            data.forEach(d => {
+                skillData.musicData.push(d)
+            })
         })
         .then(_ => {
-            upload(JSON.stringify(skillData), 'simple')
-            crawlProfile()
+            upload(JSON.stringify(skillData), 'simple', vtype, setCurrent, setBtnDisabled)
+            crawlProfile(vtype, setCurrent, setBtnDisabled)
         })
     }
     else if(gtype === 'dm') {
-        getTargetSimple('dm', 1)
+        setCurrent('Collecting URL... DM Hot')
+        getTargetSimple('dm', 1, vtype)
         .then(data => {
-            skillData.push(data)
+            data.forEach(d => {
+                skillData.musicData.push(d)
+            })
         })
         .then(_ => {
-            return getTargetSimple('dm', 0)
+            setCurrent('Collecting URL... DM Other')
+            return getTargetSimple('dm', 0, vtype)
         })
         .then(data => {
-            skillData.push(data)
+            data.forEach(d => {
+                skillData.musicData.push(d)
+            })
         })
         .then(_ => {
-            upload(JSON.stringify(skillData), 'simple')
-            crawlProfile()
+            upload(JSON.stringify(skillData), 'simple', vtype, setCurrent, setBtnDisabled)
         })
     }
 }

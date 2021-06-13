@@ -2,14 +2,16 @@ import * as cheerio from 'cheerio'
 import MusicData from './data/musicData';
 import PatternData from './data/patternData';
 
-const onSongSuccess = (data: string) => {
+const onSongSuccess = (
+    data: string,
+    setCurrent: (s: string) => void
+) => {
     const $ = cheerio.load(data)
 
     const name = $('div.live_title').text()
 
     const music: MusicData = {
         musictitle: name,
-        crawlToken: (window as any).crawlToken,
         data: [],
     }
 
@@ -33,11 +35,11 @@ const onSongSuccess = (data: string) => {
         }
     })
 
+    const ptcodelist = new Array<number>()
     if(gfExist > 0 || baExist > 0) {
-        var gfon = false
-        var baon = false
-        var ptcodelist = new Array<number>()
-        for(var i = 0; i < divlist.length; i++) {
+        let gfon = false
+        let baon = false
+        for(let i = 0; i < divlist.length; i++) {
             if(divlist[i] == 'md_part_GUITAR') {
                 gfon = true
                 baon = false
@@ -62,9 +64,12 @@ const onSongSuccess = (data: string) => {
         }
 
         $(divs).each((i, v) => {
+            const table = $(v).find('table')
+            const tbody = $(table).find('tbody').children('tr')
+
             const ptData: PatternData = {
-                ptcode: 0,
-                level: 0,
+                ptcode: ptcodelist[i],
+                level: parseInt($(table).find('.diff_area').text().replace('.', '')),
                 playcount: 0,
                 clearcount: 0,
                 clearstat: '',
@@ -75,68 +80,48 @@ const onSongSuccess = (data: string) => {
                 meter: ''
             }
 
-            const table = $(v).children('table')
-            const levels = table.children('thead').children('tr')
-
-            let diffstr = ''
-            switch(ptcodelist[i]) {
-                case 1: case 5: diffstr = 'diff_BASIC'; break;
-                case 2: case 6: diffstr = 'diff_ADVANCED'; break;
-                case 3: case 7: diffstr = 'diff_EXTREME'; break;
-                case 4: case 8: diffstr = 'diff_MASTER'; break;
-            }
-
-            const body = table.children('tbody').children('tr')
-            
-            // 성과 데이터
-            $(body).each((l,vv) => {
-                switch(l) {
+            $(tbody).each((j, vv) => {
+                switch(j) {
                 case 0:
-                    const playcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
-                    ptData.playcount = playcount
+                    ptData.playcount = parseInt($(vv).children('td.r').text().split(' ')[0])
                     break
                 case 1:
-                    const clearcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
-                    ptData.clearcount = clearcount
+                    ptData.clearcount = parseInt($(vv).children('td.r').text().split(' ')[0])
                     break
                 case 2:
-                    $(vv).children('td').each((zz,zx) => {
-                        if(zz == 1)
-                            ptData.clearstat = $(zx).attr('class')!.split(' ')[2]
+                    $(vv).children('td.r').each((k, vvv) => {
+                        if(k === 0)
+                            ptData.clearstat = $(vvv).attr('class')!.split(' ')[2]
+                        else if(k === 1)
+                            ptData.rank = $(vvv).attr('class')!.split(' ')[2]
                     })
-                    
-                    $(vv).children('td').each((zz,zx) => {
-                        if(zz == 2)
-                            ptData.rank = $(zx).attr('class')!.split(' ')[2]
-                    });
                     break
                 case 3:
-                    ptData.rate = $(vv).children('td').get(1).innerHTML
+                    ptData.rate = $(vv).children('td.r').text()
                     break
                 case 4:
-                    ptData.score = parseInt($(vv).children('td').get(1).innerHTML)
+                    ptData.score = parseInt($(vv).children('td.r').text())
                     break
                 case 5:
-                    ptData.combo = parseInt($(this).children('td').get(1).innerHTML)
+                    ptData.combo = parseInt($(vv).children('td.r').text())
                     break
                 }
             })
-            
+
             let meter = ''
-            const ul = $(this).children('div').children('div').children('ul').children('li')
+            const ul = $(v).children('div').children('div').children('ul').children('li')
             $(ul).each((l, vv) => {
                 var str = $(vv).attr('class')!.split(' ')[1]
                 meter += str[str.length - 1]
             })
             
             ptData.meter = meter
-            
+
             music.data.push(ptData)
         });
     }
     else if(dmExist > 0) {
-        const ptcodelist = new Array<number>()
-        for(var i = 0; i < divlist.length; i++) {
+        for(let i = 0; i < divlist.length; i++) {
             if(divlist[i] == 'diff_BASIC') ptcodelist.push(9)
             else if(divlist[i] == 'diff_ADVANCED') ptcodelist.push(10)
             else if(divlist[i] == 'diff_EXTREME') ptcodelist.push(11)
@@ -144,9 +129,12 @@ const onSongSuccess = (data: string) => {
         }
         
         $(divs).each((i, v) => {
+            const table = $(v).find('table')
+            const tbody = $(table).find('tbody').children('tr')
+
             const ptData: PatternData = {
-                ptcode: 0,
-                level: 0,
+                ptcode: ptcodelist[i],
+                level: parseInt($(table).find('.diff_area').text().replace('.', '')),
                 playcount: 0,
                 clearcount: 0,
                 clearstat: '',
@@ -157,54 +145,38 @@ const onSongSuccess = (data: string) => {
                 meter: ''
             }
 
-            const table = $(this).children('table')
-            const levels = table.children('thead').children('tr')
-
-            let diffstr = ''
-            switch(ptcodelist[i]) {
-                case 9: diffstr = 'diff_BASIC'; break;
-                case 10: diffstr = 'diff_ADVANCED'; break;
-                case 11: diffstr = 'diff_EXTREME'; break;
-                case 12: diffstr = 'diff_MASTER'; break;
-            }
-            
-            const body = $(this).children('table').children('tbody').children('tr')
-
-            $(body).each((l,vv) => {
-                switch(l) {
+            $(tbody).each((j, vv) => {
+                switch(j) {
                 case 0:
-                    ptData.playcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
+                    ptData.playcount = parseInt($(vv).children('td.r').text().split(' ')[0])
                     break
                 case 1:
-                    ptData.clearcount = $(vv).children('td').get(1).innerHTML.split(' ')[0]
+                    ptData.clearcount = parseInt($(vv).children('td.r').text().split(' ')[0])
                     break
                 case 2:
-                    $(vv).children('td').each((zz,zx) => {
-                        if(zz == 1)
-                            ptData.clearstat = $(zx).attr('class')!.split(' ')[2];
-                    });
-                    
-                    $(this).children('td').each((zz,zx) => {
-                        if(zz == 2)
-                            ptData.rank = $(zx).attr('class')!.split(' ')[2];
-                    });
+                    $(vv).children('td.r').each((k, vvv) => {
+                        if(k === 0)
+                            ptData.clearstat = $(vvv).attr('class')!.split(' ')[2]
+                        else if(k === 1)
+                            ptData.rank = $(vvv).attr('class')!.split(' ')[2]
+                    })
                     break
                 case 3:
-                    ptData.rate = $(vv).children('td').get(1).innerHTML
+                    ptData.rate = $(vv).children('td.r').text()
                     break
                 case 4:
-                    ptData.score = $(vv).children('td').get(1).innerHTML
+                    ptData.score = parseInt($(vv).children('td.r').text())
                     break
                 case 5:
-                    ptData.combo = $(vv).children('td').get(1).innerHTML
+                    ptData.combo = parseInt($(vv).children('td.r').text())
                     break
                 }
             })
             
             let meter = ''
-            const ul = $(this).children('div').children('div').children('ul').children('li')
+            const ul = $(v).children('div').children('div').children('ul').children('li')
             $(ul).each((l, vv) => {
-                var str = $(vv).attr('class')!.split(' ')[1]
+                var str = $(vv).attr('class')!.split('block_stat_')[1]
                 meter += str[str.length - 1]
             })
             
@@ -214,6 +186,7 @@ const onSongSuccess = (data: string) => {
         })
     }
     console.log("Collected: "+name)
+    setCurrent("Collected: "+name)
     return music
 }
 

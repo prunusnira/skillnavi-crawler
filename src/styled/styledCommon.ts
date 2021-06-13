@@ -68,6 +68,7 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 10px;
+    overflow-y: auto;
 `
 
 export const BodyHeader = styled.div`

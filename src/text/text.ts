@@ -39,9 +39,9 @@ const text = {
 				"en":"Caution"
 			},
 			warn1: {
-				"jp":"OSとは関係なくGoogle Chromeを利用してください",
-				"ko":"OS에 관계없이 Google Chrome을 사용해주세요",
-				"en":"We recommend to use Google Chrome independent to OS"
+				"jp":"Chrome, Safariなどの最新ブラウザをご利用ください",
+				"ko":"Chrome, Safari 등의 최신 브라우저를 사용해주세요",
+				"en":"Please use recent browsers like Chrome, Safari"
 			},
 			warn2: {
 				"jp":"使用前eAmusementのログインしてください",
@@ -54,9 +54,9 @@ const text = {
 				"en":"Do not use other pages of eAmusement site while updating your data (Even in other devices)"
 			},
 			warn4: {
-				"jp":"更新中では必ずこのタブが画面に見えるようにしてください (バックグラウンドでは更新が止まります)",
-				"ko":"갱신중에는 반드시 탭이 화면에 보이도록 해주세요 (백그라운드로 할 경우 갱신이 멈춤)",
-				"en":"While updating, Please KEEP THE TAB foreground (Making background will stop update)"
+				"jp":"更新中ではなるべくこのタブが画面に見えるようにしてください (バックグラウンドでは更新が遅くなったり止まることがあります)",
+				"ko":"갱신중에는 되도록 탭이 화면에 보이도록 해주세요 (백그라운드로 할 경우 갱신이 느려지거나 멈출 수 있습니다)",
+				"en":"While updating, Please keep this tab foreground (Making background may slowdown or stop update)"
 			}
 		},
 		current: {
@@ -103,9 +103,9 @@ const text = {
 			"en":"All data update"
 		},
 		descAll: {
-			"jp":"解禁済みの全曲のデータを更新します。およそ1時間かかります",
-			"ko":"해금이 되어있는 모든 곡의 데이터를 갱신합니다. 약 1시간정도 소요됩니다.",
-			"en":"All unlocked music is updated. It takes about 1 hours"
+			"jp":"解禁済みの全曲のデータを更新します。およそ1時間かかります (時間がかかりすぎるのでGF/DMを同時に進行できません)",
+			"ko":"해금이 되어있는 모든 곡의 데이터를 갱신합니다. 약 1시간정도 소요됩니다. (시간이 너무 오래 소요되어 GF/DM을 동시에 진행할 수 없습니다)",
+			"en":"All unlocked music is updated. It takes about 1 hours (ALL button is blocked here - too much time used)"
 		},
 		
 		descFavoT: {

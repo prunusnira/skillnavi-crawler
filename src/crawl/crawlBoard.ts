@@ -1,9 +1,14 @@
+import CommonData from "../function/commonData";
 import upload from "./upload";
 
-const crawlBoard = (gtype: string) => {
+const crawlBoard = (
+    gtype: string,
+    setCurrent: (s: string) => void,
+    setBtnDisabled: (b: boolean) => void
+) => {
     const img = new Image()
     img.crossOrigin = 'anonymous'
-    img.src = `https://p.eagate.573.jp/game/gfdm/gitadora_highvoltage/p/playdata/playerboard_img.html?gtype=${gtype}&bkind=1`
+    img.src = `${CommonData.boardUrl}?gtype=${gtype}&bkind=1`
 
     img.onload = (event: Event) => {
         const canvas = document.createElement("canvas")
@@ -16,8 +21,7 @@ const crawlBoard = (gtype: string) => {
         const dataURL = canvas.toDataURL("image/png")
 
         // 이미지 데이터를 base64 인코딩 하여 전송
-        upload(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""), 'board')
-        //console.log(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""));
+        upload(dataURL.replace(/^data:image\/(png|jpg);base64,/, ""), 'board', 0, setCurrent, setBtnDisabled)
     }
 }
 

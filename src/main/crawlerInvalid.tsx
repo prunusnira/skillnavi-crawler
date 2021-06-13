@@ -8,16 +8,7 @@ import text from "../text/text";
 
 interface Props {
     lang: string,
-    isUserLogined: boolean,
-    username: string,
-
-    currentMusic: string,
-    delayRef: React.RefObject<HTMLInputElement>,
-
     closeUpdater: () => void,
-    setDelayInput: (e: FormEvent<HTMLInputElement>) => void,
-    crawlRunner: (n: number) => void,
-    crawlSelRunner: (n: number) => void,
 }
 
 const CrawlerInvalid = (props: Props) => {
@@ -35,9 +26,6 @@ const CrawlerInvalid = (props: Props) => {
                             </Button>
                         </ItemCol>
                     </ItemRow>
-                    <ItemRow style={{textAlign: 'center'}}>
-                        Version. NEXTAGE
-                    </ItemRow>
                 </BodyHeader>
 
                 <BodyContent>
@@ -45,10 +33,10 @@ const CrawlerInvalid = (props: Props) => {
                         <h3>Not Logined</h3>
                     </BodyHeader>
                     <BodyContent>
-                        <ItemRow>
+                        <ItemRow keepDirHor={true}>
                             {`${(text.crawler.notlogin.line1 as any)[props.lang]}`}
                         </ItemRow>
-                        <ItemRow>
+                        <ItemRow keepDirHor={true}>
                             {`${(text.crawler.notlogin.line2 as any)[props.lang]}`}
                         </ItemRow>
                         <ItemRow keepDirHor={true}>

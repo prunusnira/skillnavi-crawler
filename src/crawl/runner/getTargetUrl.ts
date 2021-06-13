@@ -1,9 +1,14 @@
 import axios from "axios"
 import * as cheerio from 'cheerio'
+import CommonData from "../../function/commonData"
 import UrlData from "../data/urlData"
 
-const getTargetUrl = (gtype: string, stype: number) => {
-    return axios.get(`https://p.eagate.573.jp/game/gfdm/gitadora_highvoltage/p/playdata/skill.html?gtype=${gtype}&stype=${stype}`)
+const getTargetUrl = (
+    gtype: string,
+    stype: number,
+    vtype: number
+) => {
+    return axios.get(`${CommonData.skillUrl[vtype]}?gtype=${gtype}&stype=${stype}`)
     .then(rtn => {
         // get all link to each song -> run get song info
         const $ = cheerio.load(rtn.data)
@@ -12,7 +17,7 @@ const getTargetUrl = (gtype: string, stype: number) => {
         $('.text_link').each((idx, val) => {
             linklist.push({
                 targetTo: $(val).attr('href')!,
-                ref: `https://p.eagate.573.jp/game/gfdm/gitadora_highvoltage/p/playdata/skill.html?gtype=${gtype}&stype=${stype}`
+                ref: `${CommonData.skillUrl[vtype]}?gtype=${gtype}&stype=${stype}`
             })
             console.log("[Collecting URL] "+ idx +" checked")
         })

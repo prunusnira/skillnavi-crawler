@@ -3,6 +3,7 @@ import '../css/bootstrap.min.css'
 import '../css/filter.css'
 import '../css/overall-w.css'
 import '../css/table.css'
+import CommonData from "../function/commonData";
 import { BodyContent, BodyHeader, Button, Container, ItemCol, ItemRow } from "../styled/styledCommon";
 import text from "../text/text";
 
@@ -11,9 +12,13 @@ interface Props {
     isUserLogined: boolean,
     username: string,
 
-    currentMusic: string,
+    current: string,
     delayRef: React.RefObject<HTMLInputElement>,
+    btnDisabled: boolean,
+    vtype: number,
+    delay: number,
 
+    setVerType: (n: number) => void,
     closeUpdater: () => void,
     setDelayInput: (e: FormEvent<HTMLInputElement>) => void,
     crawlRunner: (n: number) => void,
@@ -30,13 +35,68 @@ const CrawlerPresenter = (props: Props) => {
                             DATA UPDATE
                         </ItemCol>
                         <ItemCol size={3} className='crawler-pagetop'>
-                            <Button onClick={props.closeUpdater}>
+                            <Button
+                                className="btn btn-primary"
+                                onClick={props.closeUpdater}
+                                id="closeUpdater">
                                 CLOSE
                             </Button>
                         </ItemCol>
                     </ItemRow>
-                    <ItemRow style={{textAlign: 'center'}}>
-                        Version. NEXTAGE
+                    <ItemRow keepDirHor={true} style={{textAlign: 'center'}}>
+                        <ItemCol size={2}>
+                            <Button
+                                className="btn btn-primary"
+                                onClick={() => props.setVerType(0)}
+                                style={{width: '100%'}}
+                                disabled={props.vtype === 0 ? true : false}
+                                id="setVerHV">
+                                HV
+                            </Button>
+                        </ItemCol>
+                        <ItemCol size={2}>
+                            <Button
+                                className="btn btn-secondary"
+                                onClick={() => props.setVerType(4)}
+                                style={{width: '100%'}}
+                                disabled={props.vtype === 4 ? true : false}
+                                id="setVerNX">
+                                NX
+                            </Button>
+                        </ItemCol>
+                        <ItemCol size={2}>
+                            <Button
+                                className="btn btn-secondary"
+                                onClick={() => props.setVerType(3)}
+                                style={{width: '100%'}}
+                                disabled={props.vtype === 3 ? true : false}
+                                id="setVerEX">
+                                EX
+                            </Button>
+                        </ItemCol>
+                        <ItemCol size={2}>
+                            <Button
+                                className="btn btn-secondary"
+                                onClick={() => props.setVerType(2)}
+                                style={{width: '100%'}}
+                                disabled={props.vtype === 2 ? true : false}
+                                id="setVerMX">
+                                MX
+                            </Button>
+                        </ItemCol>
+                        <ItemCol size={2}>
+                            <Button
+                                className="btn btn-secondary"
+                                onClick={() => props.setVerType(1)}
+                                style={{width: '100%'}}
+                                disabled={props.vtype === 1 ? true : false}
+                                id="setVerRE">
+                                TBRE
+                            </Button>
+                        </ItemCol>
+                    </ItemRow>
+                    <ItemRow>
+                        {`${CommonData.vertxt[props.vtype]}`}
                     </ItemRow>
                 </BodyHeader>
 
@@ -76,7 +136,7 @@ const CrawlerPresenter = (props: Props) => {
                                 <h5>{`${(text.crawler.current as any)[props.lang]}`}</h5>
                             </ItemRow>
                             <ItemRow>
-                                {props.currentMusic}
+                                {props.current}
                             </ItemRow>
                         </ItemCol>
                         <ItemCol size={5}>
@@ -88,12 +148,12 @@ const CrawlerPresenter = (props: Props) => {
                                     ref={props.delayRef}
                                     type="range"
                                     id="delaySlider"
-                                    value={props.delayRef.current?.value}
+                                    value={props.delay}
                                     min="10"
                                     max="2000"
                                     onChange={props.setDelayInput}
                                     style={{width: '90%', fontWeight: 'bold'}} />
-                                <span style={{fontSize: '22px'}}>{props.delayRef.current?.value} ms</span>
+                                <span style={{fontSize: '22px'}}>{props.delay} ms</span>
                             </ItemRow>
                         </ItemCol>
                     </ItemRow>
@@ -115,14 +175,16 @@ const CrawlerPresenter = (props: Props) => {
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(9)}
+                                        onClick={() => props.crawlRunner(11)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnGTgt2">GF</Button>
                                 </ItemCol>
                                 <ItemCol size={3.3}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(10)}
+                                        onClick={() => props.crawlRunner(12)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnDTgt2">DM</Button>
                                 </ItemCol>
                                 <ItemCol size={3.3}>
@@ -130,6 +192,7 @@ const CrawlerPresenter = (props: Props) => {
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
                                         onClick={() => props.crawlRunner(10)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnATgt2">All</Button>
                                 </ItemCol>
                             </ItemRow>
@@ -146,21 +209,24 @@ const CrawlerPresenter = (props: Props) => {
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(3)}
+                                        onClick={() => props.crawlRunner(31)}
+                                        disabled={props.btnDisabled}
                                         id="btnGTgt">GF</Button>
                                 </ItemCol>
                                 <ItemCol size={3.3}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(4)}
+                                        onClick={() => props.crawlRunner(32)}
+                                        disabled={props.btnDisabled}
                                         id="btnDTgt">DM</Button>
                                 </ItemCol>
                                 <ItemCol size={3.3}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(4)}
+                                        onClick={() => props.crawlRunner(30)}
+                                        disabled={props.btnDisabled}
                                         id="btnATgt">All</Button>
                                 </ItemCol>
                             </ItemRow>
@@ -173,27 +239,30 @@ const CrawlerPresenter = (props: Props) => {
                                 {`${(text.crawler.descAll as any)[props.lang]}`}
                             </ItemRow>
                             <ItemRow keepDirHor={true}>
-                                <ItemCol size={3.3}>
+                                <ItemCol size={5}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(1)}
+                                        onClick={() => props.crawlRunner(21)}
+                                        disabled={props.btnDisabled}
                                         id="btnGAll">GF</Button>
                                 </ItemCol>
-                                <ItemCol size={3.3}>
+                                <ItemCol size={5}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(2)}
+                                        onClick={() => props.crawlRunner(22)}
+                                        disabled={props.btnDisabled}
                                         id="btnDAll">DM</Button>
                                 </ItemCol>
-                                <ItemCol size={3.3}>
+                                {/*<ItemCol size={3.3}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(2)}
+                                        onClick={() => props.crawlRunner(20)}
+                                        disabled={props.btnDisabled}
                                         id="btnAAll">All</Button>
-                                </ItemCol>
+                                </ItemCol>*/}
                             </ItemRow>
                         </BodyContent>
                         <BodyContent>
@@ -208,21 +277,24 @@ const CrawlerPresenter = (props: Props) => {
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(7)}
+                                        onClick={() => props.crawlRunner(41)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnGFav">GF</Button>
                                 </ItemCol>
                                 <ItemCol size={3.3}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(8)}
+                                        onClick={() => props.crawlRunner(42)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnDFav">DM</Button>
                                 </ItemCol>
                                 <ItemCol size={3.3}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(8)}
+                                        onClick={() => props.crawlRunner(40)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnAFav">All</Button>
                                 </ItemCol>
                             </ItemRow>
@@ -243,7 +315,8 @@ const CrawlerPresenter = (props: Props) => {
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(5)}
+                                        onClick={() => props.crawlRunner(51)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnGBrd">
                                         {`GF ${(text.crawler.board.short as any)[props.lang]}`}
                                     </Button>
@@ -252,7 +325,8 @@ const CrawlerPresenter = (props: Props) => {
                                     <Button
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(6)}
+                                        onClick={() => props.crawlRunner(52)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnDBrd">
                                         {`DM ${(text.crawler.board.short as any)[props.lang]}`}
                                     </Button>
@@ -463,6 +537,7 @@ const CrawlerPresenter = (props: Props) => {
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
                                         onClick={() => props.crawlSelRunner(1)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnGSel">
                                         {`${(text.crawler.gsel as any)[props.lang]}`}
                                     </Button>
@@ -472,6 +547,7 @@ const CrawlerPresenter = (props: Props) => {
                                         className="btn btn-primary"
                                         style={{width: '100%'}}
                                         onClick={() => props.crawlSelRunner(2)}
+                                        disabled={props.vtype > 0 ? true : props.btnDisabled}
                                         id="btnDSel">
                                         {`${(text.crawler.dsel as any)[props.lang]}`}
                                     </Button>

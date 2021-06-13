@@ -1,13 +1,21 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
+import CommonData from '../function/commonData';
 import Profile from './data/profileData';
 import upload from './upload';
 
-const crawlProfile = () => {
-    console.log("[Skill Navigator] Initializing Profile Update")
-    axios.get(`https://p.eagate.573.jp/game/gfdm/gitadora_highvoltage/p/playdata/profile.html`)
+const crawlProfile = (
+    vtype: number,
+    setCurrent: (s: string) => void,
+    setBtnDisabled: (b: boolean) => void
+) => {
+    console.log("[Skill Navigator] Profile Update Initializing")
+    setCurrent('Profile Update Initializing...')
+
+    axios.get(`${CommonData.profUrl[vtype]}`)
     .then(html => {
         console.log("[Skill Navigator] Profile Data Received")
+        setCurrent('Profile Data Received')
 
         const $ = cheerio.load(html.data)
 
@@ -17,11 +25,13 @@ const crawlProfile = () => {
         const table = $('#profile_tb')
 
         const arr = Array<Array<string>>()
-        const data = table.children('tbody').children('tr')
-        data.each(i => {
-            $(this).children('td').each(j => {
-                arr[i][j] = $(this).text()
+        const data = $(table).children('tbody').children('tr')
+        data.each((i, row) => {
+            const rowarr = new Array<string>()
+            $(row).children('td').each((j, col) => {
+                rowarr.push($(col).text())
             })
+            arr.push(rowarr)
         })
 
         const profileData: Profile = {
@@ -46,8 +56,9 @@ const crawlProfile = () => {
             crawlToken: (window as any).crawlToken
         }
         
-        console.log("[GITADORA Info] Uploading Profile...")
-        upload(JSON.stringify(profileData), 'profile')
+        console.log("[Skill Navigator] Uploading Profile...")
+        setCurrent('Uploading Profile...')
+        upload(JSON.stringify(profileData), 'profile', vtype, setCurrent, setBtnDisabled)
     })
 }
 
