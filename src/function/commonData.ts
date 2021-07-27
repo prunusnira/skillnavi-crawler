@@ -3,10 +3,10 @@ class CommonData {
 
     static vertxt = [
         `HIGH-VOLTAGE`,
-        `NEX+AGE`,
-        `EXCHAIN`,
+        `Tri-Boost Re:Evolve`,
         `MATIXX`,
-        `Tri-Boost Re:Evolve`
+        `EXCHAIN`,
+        `NEX+AGE`,
     ]
 
     // 0: hv, 1: tbre, 2: mx, 3: ex, 4: nx
