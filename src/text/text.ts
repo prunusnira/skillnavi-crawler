@@ -49,8 +49,8 @@ const text = {
 				"en":"Sign into eAmusement before using it"
 			},
 			warn3: {
-				"jp":"使用中eAmusementの他のページを探索するとデータに以上が発生します (他のデバイスでもNG)",
-				"ko":"사용 중 eAmusement의 다른 페이지에 접근하지 마세요 (다른 디바이스를 사용해도 안됨)",
+				"jp":"更新中eAmusementの他のページを探索するとデータに異常が発生します (他のデバイスでもNG)",
+				"ko":"갱신 중 eAmusement의 다른 페이지에 접근하지 마세요 (다른 디바이스를 사용해도 안됨)",
 				"en":"Do not use other pages of eAmusement site while updating your data (Even in other devices)"
 			},
 			warn4: {

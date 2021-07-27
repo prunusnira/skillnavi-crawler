@@ -30,7 +30,7 @@ const getMusicUrl = (
                     targetTo: $(val).attr('href')!,
                     ref: `${CommonData.musicUrl[vtype]}?gtype=${gtype}&cat=${categoryArray[currentIdx]}`
                 })
-                console.log(`[Collecting URL] Category ${currentIdx} / ${idx}`)
+                console.log(`[Collecting URL] Category ${currentIdx} / Music Count ${idx}`)
             })
             
             setTimeout(function() {
