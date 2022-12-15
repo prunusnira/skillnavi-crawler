@@ -58,9 +58,18 @@ const CrawlerPresenter = (props: Props) => {
                                 onClick={() => props.setVerType(0)}
                                 style={{ width: "100%" }}
                                 disabled={props.vtype === 0 ? true : false}
+                                id="setVerFU"
+                            >
+                                FUZZ-UP
+                            </Button>
+                            <Button
+                                className="btn btn-primary"
+                                onClick={() => props.setVerType(1)}
+                                style={{ width: "100%" }}
+                                disabled={props.vtype === 0 ? true : false}
                                 id="setVerHV"
                             >
-                                HV
+                                High-Voltage
                             </Button>
                         </ItemCol>
                     </ItemRow>
