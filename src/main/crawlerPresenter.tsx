@@ -57,24 +57,19 @@ const CrawlerPresenter = (props: Props) => {
                     </ItemRow>
                     <ItemRow keepDirHor={true} style={{ textAlign: "center" }}>
                         <ItemCol size={2}>
-                            <Button
-                                className="btn btn-primary"
-                                onClick={() => props.setVerType(0)}
-                                style={{ width: "100%" }}
-                                disabled={props.vtype === 0 ? true : false}
-                                id="setVerFU"
-                            >
-                                FUZZ-UP
-                            </Button>
-                            <Button
-                                className="btn btn-primary"
-                                onClick={() => props.setVerType(1)}
-                                style={{ width: "100%" }}
-                                disabled={props.vtype === 1 ? true : false}
-                                id="setVerHV"
-                            >
-                                High-Voltage
-                            </Button>
+                            {
+                                CommonData.vertxt.map((x, i) => (
+                                    <Button
+                                        className="btn btn-primary"
+                                        onClick={() => props.setVerType(i)}
+                                        style={{ width: "100%" }}
+                                        disabled={props.vtype === i}
+                                        id="setVerGW"
+                                    >
+                                        {x}
+                                    </Button>
+                                ))
+                            }
                         </ItemCol>
                     </ItemRow>
                     <ItemRow>{`${CommonData.vertxt[props.vtype]}`}</ItemRow>
