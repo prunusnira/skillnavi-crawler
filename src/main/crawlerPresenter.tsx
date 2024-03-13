@@ -64,7 +64,6 @@ const CrawlerPresenter = (props: Props) => {
                                         onClick={() => props.setVerType(i)}
                                         style={{ width: "100%" }}
                                         disabled={props.vtype === i}
-                                        id="setVerGW"
                                     >
                                         {x}
                                     </Button>
