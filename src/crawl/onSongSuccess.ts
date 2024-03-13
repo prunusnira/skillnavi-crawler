@@ -26,11 +26,11 @@ const onSongSuccess = (
     $('div.white_box').children().each((i, v) => {
         const str = $(v).attr('class')
 
-        if(str == 'md_part_GUITAR' || str == 'md_part_BASS' || str == 'md_part_') {
+        if(str === 'md_part_GUITAR' || str === 'md_part_BASS' || str === 'md_part_') {
             divlist.push(str)
         }
 
-        if(str == 'md_list_contents') {
+        if(str === 'md_list_contents') {
             divlist.push($(v).find('th').attr('class')!)
         }
     })
@@ -40,26 +40,26 @@ const onSongSuccess = (
         let gfon = false
         let baon = false
         for(let i = 0; i < divlist.length; i++) {
-            if(divlist[i] == 'md_part_GUITAR') {
+            if(divlist[i] === 'md_part_GUITAR') {
                 gfon = true
                 baon = false
             }
-            else if(divlist[i] == 'md_part_BASS') {
+            else if(divlist[i] === 'md_part_BASS') {
                 gfon = false
                 baon = true
             }
 
             if(gfon) {
-                if(divlist[i] == 'diff_BASIC') ptcodelist.push(1)
-                else if(divlist[i] == 'diff_ADVANCED') ptcodelist.push(2)
-                else if(divlist[i] == 'diff_EXTREME') ptcodelist.push(3)
-                else if(divlist[i] == 'diff_MASTER') ptcodelist.push(4)
+                if(divlist[i] === 'diff_BASIC') ptcodelist.push(1)
+                else if(divlist[i] === 'diff_ADVANCED') ptcodelist.push(2)
+                else if(divlist[i] === 'diff_EXTREME') ptcodelist.push(3)
+                else if(divlist[i] === 'diff_MASTER') ptcodelist.push(4)
             }
             else if(baon) {
-                if(divlist[i] == 'diff_BASIC') ptcodelist.push(5)
-                else if(divlist[i] == 'diff_ADVANCED') ptcodelist.push(6)
-                else if(divlist[i] == 'diff_EXTREME') ptcodelist.push(7)
-                else if(divlist[i] == 'diff_MASTER') ptcodelist.push(8)
+                if(divlist[i] === 'diff_BASIC') ptcodelist.push(5)
+                else if(divlist[i] === 'diff_ADVANCED') ptcodelist.push(6)
+                else if(divlist[i] === 'diff_EXTREME') ptcodelist.push(7)
+                else if(divlist[i] === 'diff_MASTER') ptcodelist.push(8)
             }
         }
 
@@ -122,10 +122,10 @@ const onSongSuccess = (
     }
     else if(dmExist > 0) {
         for(let i = 0; i < divlist.length; i++) {
-            if(divlist[i] == 'diff_BASIC') ptcodelist.push(9)
-            else if(divlist[i] == 'diff_ADVANCED') ptcodelist.push(10)
-            else if(divlist[i] == 'diff_EXTREME') ptcodelist.push(11)
-            else if(divlist[i] == 'diff_MASTER') ptcodelist.push(12)
+            if(divlist[i] === 'diff_BASIC') ptcodelist.push(9)
+            else if(divlist[i] === 'diff_ADVANCED') ptcodelist.push(10)
+            else if(divlist[i] === 'diff_EXTREME') ptcodelist.push(11)
+            else if(divlist[i] === 'diff_MASTER') ptcodelist.push(12)
         }
         
         $(divs).each((i, v) => {

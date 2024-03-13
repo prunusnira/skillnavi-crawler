@@ -9,7 +9,7 @@ function defaultStyle<T, K>(component: T, defaultProps: K): DefaultStyle<T, K> {
 }
 
 // keepDirHor: 줄어들어도 여전히 horizontal을 유지
-const ItemRowBase = styled.div<{keepDirHor: boolean, setVertical: boolean}>`
+const ItemRowBase = styled.div<{keepDirHor?: boolean, setVertical?: boolean}>`
     width: 100%;
     display: flex;
     padding-top: 5px;
@@ -34,7 +34,7 @@ const ItemRowBase = styled.div<{keepDirHor: boolean, setVertical: boolean}>`
 export const ItemRow = defaultStyle(ItemRowBase, {keepDirHor: false, setVertical: false})
 
 // 사이즈는 10 기준으로 계산함
-const ItemColBase = styled.div<{size: number, isFlatUnderLg: boolean}>`
+const ItemColBase = styled.div<{size: number, isFlatUnderLg?: boolean}>`
     ${props => props.isFlatUnderLg ?
         `
         @media screen and (max-width: 1199px) {
@@ -104,7 +104,7 @@ const IconBase = styled.img<{sizeType: string}>`
 `
 
 const iconSize = (sizeType: string) => {
-    let rtn = ''
+    let rtn;
     switch(sizeType) {
         case 'lg':
             rtn = `width: 50px;
