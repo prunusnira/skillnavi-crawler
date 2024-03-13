@@ -13,6 +13,9 @@ const upload = (
         let url = ''
         switch(vtype) {
             case 1:
+                url = `${CommonData.uploadProfile[1]}/fu`
+                break
+            case 2:
                 url = `${CommonData.uploadProfile[1]}/hv`
                 break
             default:
@@ -71,6 +74,9 @@ const upload = (
         let url = ''
         switch(vtype) {
             case 1:
+                url = `${CommonData.uploadSkill[1]}/fu`
+                break
+            case 2:
                 url = `${CommonData.uploadSkill[1]}/hv`
                 break
             default:
