@@ -317,7 +317,7 @@ const CrawlerPresenter = (props: Props) => {
                             }`}</ItemRow>
 
                             <ItemRow>
-                                Page 1
+                                Page 1 (お気に入り1)
                             </ItemRow>
                             <ItemRow keepDirHor={true}>
                                 <ItemCol size={3.3}>
@@ -368,7 +368,7 @@ const CrawlerPresenter = (props: Props) => {
                             </ItemRow>
 
                             <ItemRow>
-                                Page 2
+                                Page 2 (お気に入り2)
                             </ItemRow>
                             <ItemRow keepDirHor={true}>
                                 <ItemCol size={3.3}>
@@ -419,7 +419,7 @@ const CrawlerPresenter = (props: Props) => {
                             </ItemRow>
 
                             <ItemRow>
-                                Page 3
+                                Page 3 (お気に入り3)
                             </ItemRow>
                             <ItemRow keepDirHor={true}>
                                 <ItemCol size={3.3}>
