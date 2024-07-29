@@ -158,6 +158,8 @@ const CrawlerPresenter = (props: Props) => {
                                 (text.crawler.datat as any)[props.lang]
                             }`}</h5>
                         </BodyHeader>
+
+                        {/* 스킬 대상곡 단축 */}
                         <BodyContent>
                             <ItemRow>
                                 <h5>{`${
@@ -217,6 +219,8 @@ const CrawlerPresenter = (props: Props) => {
                                 </ItemCol>
                             </ItemRow>
                         </BodyContent>
+
+                        {/* 스킬 대상곡 전체 */}
                         <BodyContent>
                             <ItemRow>
                                 <h5>{`${
@@ -264,6 +268,8 @@ const CrawlerPresenter = (props: Props) => {
                                 </ItemCol>
                             </ItemRow>
                         </BodyContent>
+
+                        {/* 전곡 */}
                         <BodyContent>
                             <ItemRow>
                                 <h5>{`${
@@ -296,16 +302,10 @@ const CrawlerPresenter = (props: Props) => {
                                         DM
                                     </Button>
                                 </ItemCol>
-                                {/*<ItemCol size={3.3}>
-                                    <Button
-                                        className="btn btn-primary"
-                                        style={{width: '100%'}}
-                                        onClick={() => props.crawlRunner(20)}
-                                        disabled={props.btnDisabled}
-                                        id="btnAAll">All</Button>
-                                </ItemCol>*/}
                             </ItemRow>
                         </BodyContent>
+
+                        {/* 즐겨찾기 */}
                         <BodyContent>
                             <ItemRow>
                                 <h5>{`${
@@ -315,12 +315,16 @@ const CrawlerPresenter = (props: Props) => {
                             <ItemRow>{`${
                                 (text.crawler.descFavo as any)[props.lang]
                             }`}</ItemRow>
+
+                            <ItemRow>
+                                Page 1 (お気に入り1)
+                            </ItemRow>
                             <ItemRow keepDirHor={true}>
                                 <ItemCol size={3.3}>
                                     <Button
                                         className="btn btn-primary"
                                         style={{ width: "100%" }}
-                                        onClick={() => props.crawlRunner(41)}
+                                        onClick={() => props.crawlRunner(411)}
                                         disabled={
                                             props.vtype > 0
                                                 ? true
@@ -335,7 +339,7 @@ const CrawlerPresenter = (props: Props) => {
                                     <Button
                                         className="btn btn-primary"
                                         style={{ width: "100%" }}
-                                        onClick={() => props.crawlRunner(42)}
+                                        onClick={() => props.crawlRunner(421)}
                                         disabled={
                                             props.vtype > 0
                                                 ? true
@@ -350,7 +354,109 @@ const CrawlerPresenter = (props: Props) => {
                                     <Button
                                         className="btn btn-primary"
                                         style={{ width: "100%" }}
-                                        onClick={() => props.crawlRunner(40)}
+                                        onClick={() => props.crawlRunner(401)}
+                                        disabled={
+                                            props.vtype > 0
+                                                ? true
+                                                : props.btnDisabled
+                                        }
+                                        id="btnAFav"
+                                    >
+                                        All
+                                    </Button>
+                                </ItemCol>
+                            </ItemRow>
+
+                            <ItemRow>
+                                Page 2 (お気に入り2)
+                            </ItemRow>
+                            <ItemRow keepDirHor={true}>
+                                <ItemCol size={3.3}>
+                                    <Button
+                                        className="btn btn-primary"
+                                        style={{ width: "100%" }}
+                                        onClick={() => props.crawlRunner(412)}
+                                        disabled={
+                                            props.vtype > 0
+                                                ? true
+                                                : props.btnDisabled
+                                        }
+                                        id="btnGFav"
+                                    >
+                                        GF
+                                    </Button>
+                                </ItemCol>
+                                <ItemCol size={3.3}>
+                                    <Button
+                                        className="btn btn-primary"
+                                        style={{ width: "100%" }}
+                                        onClick={() => props.crawlRunner(422)}
+                                        disabled={
+                                            props.vtype > 0
+                                                ? true
+                                                : props.btnDisabled
+                                        }
+                                        id="btnDFav"
+                                    >
+                                        DM
+                                    </Button>
+                                </ItemCol>
+                                <ItemCol size={3.3}>
+                                    <Button
+                                        className="btn btn-primary"
+                                        style={{ width: "100%" }}
+                                        onClick={() => props.crawlRunner(402)}
+                                        disabled={
+                                            props.vtype > 0
+                                                ? true
+                                                : props.btnDisabled
+                                        }
+                                        id="btnAFav"
+                                    >
+                                        All
+                                    </Button>
+                                </ItemCol>
+                            </ItemRow>
+
+                            <ItemRow>
+                                Page 3 (お気に入り3)
+                            </ItemRow>
+                            <ItemRow keepDirHor={true}>
+                                <ItemCol size={3.3}>
+                                    <Button
+                                        className="btn btn-primary"
+                                        style={{ width: "100%" }}
+                                        onClick={() => props.crawlRunner(413)}
+                                        disabled={
+                                            props.vtype > 0
+                                                ? true
+                                                : props.btnDisabled
+                                        }
+                                        id="btnGFav"
+                                    >
+                                        GF
+                                    </Button>
+                                </ItemCol>
+                                <ItemCol size={3.3}>
+                                    <Button
+                                        className="btn btn-primary"
+                                        style={{ width: "100%" }}
+                                        onClick={() => props.crawlRunner(423)}
+                                        disabled={
+                                            props.vtype > 0
+                                                ? true
+                                                : props.btnDisabled
+                                        }
+                                        id="btnDFav"
+                                    >
+                                        DM
+                                    </Button>
+                                </ItemCol>
+                                <ItemCol size={3.3}>
+                                    <Button
+                                        className="btn btn-primary"
+                                        style={{ width: "100%" }}
+                                        onClick={() => props.crawlRunner(403)}
                                         disabled={
                                             props.vtype > 0
                                                 ? true

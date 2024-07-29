@@ -22,6 +22,10 @@ class CommonData {
         `https://p.eagate.573.jp/game/gfdm/gitadora_highvoltage/p/playdata/skill.html`,
     ]; // ?gtype &stype
 
+    static favoUrl1 = `https://p.eagate.573.jp/game/gfdm/gitadora_galaxywave/p/setting/favorite1.html`;
+    static favoUrl2 = `https://p.eagate.573.jp/game/gfdm/gitadora_galaxywave/p/setting/favorite2.html`;
+    static favoUrl3 = `https://p.eagate.573.jp/game/gfdm/gitadora_galaxywave/p/setting/favorite3.html`;
+
     static favoUrl = `https://p.eagate.573.jp/game/gfdm/gitadora_galaxywave/p/setting/favorite.html`;
     static boardUrl = `https://p.eagate.573.jp/game/gfdm/gitadora_galaxywave/p/playdata/playerboard_img.html`;
 
