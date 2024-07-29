@@ -165,6 +165,14 @@ const text = {
 			"jp":"数字・記号",
 			"ko":"숫자/기호",
 			"en":"Number/Sign"
+		},
+
+		favorite: {
+			pageError: {
+				"jp": 'お気に入りページの情報が正しくありません',
+				"ko": '즐겨찾기 페이지 정보가 정확하지 않습니다',
+				"en": 'Favorite page number is not correct',
+			}
 		}
 	}
 };

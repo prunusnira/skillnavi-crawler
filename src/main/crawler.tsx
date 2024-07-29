@@ -49,9 +49,15 @@ const Crawler = () => {
         else if(type===32) crawlTarget('dm', delay, vtype, setCurrent, setBtnDisabled)
         
         // favo update
-        else if(type===40) crawlFavo('all', delay, setCurrent, setBtnDisabled)
-        else if(type===41) crawlFavo('gf', delay, setCurrent, setBtnDisabled)
-        else if(type===42) crawlFavo('dm', delay, setCurrent, setBtnDisabled)
+        else if(type===401) crawlFavo(1, 'all', delay, setCurrent, setBtnDisabled)
+        else if(type===411) crawlFavo(1, 'gf', delay, setCurrent, setBtnDisabled)
+        else if(type===421) crawlFavo(1, 'dm', delay, setCurrent, setBtnDisabled)
+        else if(type===402) crawlFavo(2, 'all', delay, setCurrent, setBtnDisabled)
+        else if(type===412) crawlFavo(2, 'gf', delay, setCurrent, setBtnDisabled)
+        else if(type===422) crawlFavo(2, 'dm', delay, setCurrent, setBtnDisabled)
+        else if(type===403) crawlFavo(3, 'all', delay, setCurrent, setBtnDisabled)
+        else if(type===413) crawlFavo(3, 'gf', delay, setCurrent, setBtnDisabled)
+        else if(type===423) crawlFavo(3, 'dm', delay, setCurrent, setBtnDisabled)
         
         // board update
         else if(type===51) crawlBoard('gf', setCurrent, setBtnDisabled)
