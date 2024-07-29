@@ -1,5 +1,4 @@
-import * as cheerio from "cheerio"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import crawlBoard from "../crawl/crawlBoard"
 import crawlFavo from "../crawl/crawlFavo"
 import crawlProfile from "../crawl/crawlProfile"
@@ -32,31 +31,31 @@ const Crawler = () => {
     }
 
     const crawlRunner = (type: number) => {
-        if(type==0) crawlProfile(vtype, setCurrent, setBtnDisabled)
+        if(type===0) crawlProfile(vtype, setCurrent, setBtnDisabled)
         
         // quick target update
-        else if(type==10) crawlTargetQuick('all', delay, vtype, setCurrent, setBtnDisabled)
-        else if(type==11) crawlTargetQuick('gf', delay, vtype, setCurrent, setBtnDisabled)
-        else if(type==12) crawlTargetQuick('dm', delay, vtype, setCurrent, setBtnDisabled)
+        else if(type===10) crawlTargetQuick('all', delay, vtype, setCurrent, setBtnDisabled)
+        else if(type===11) crawlTargetQuick('gf', delay, vtype, setCurrent, setBtnDisabled)
+        else if(type===12) crawlTargetQuick('dm', delay, vtype, setCurrent, setBtnDisabled)
         
         // all song update
-        else if(type==20) crawlAllSong('all', delay, false, [], vtype, setCurrent, setBtnDisabled)
-        else if(type==21) crawlAllSong('gf', delay, false, [], vtype, setCurrent, setBtnDisabled)
-        else if(type==22) crawlAllSong('dm', delay, false, [], vtype, setCurrent, setBtnDisabled)
+        else if(type===20) crawlAllSong('all', delay, false, [], vtype, setCurrent, setBtnDisabled)
+        else if(type===21) crawlAllSong('gf', delay, false, [], vtype, setCurrent, setBtnDisabled)
+        else if(type===22) crawlAllSong('dm', delay, false, [], vtype, setCurrent, setBtnDisabled)
         
         // target song update
-        else if(type==30) crawlTarget('all', delay, vtype, setCurrent, setBtnDisabled)
-        else if(type==31) crawlTarget('gf', delay, vtype, setCurrent, setBtnDisabled)
-        else if(type==32) crawlTarget('dm', delay, vtype, setCurrent, setBtnDisabled)
+        else if(type===30) crawlTarget('all', delay, vtype, setCurrent, setBtnDisabled)
+        else if(type===31) crawlTarget('gf', delay, vtype, setCurrent, setBtnDisabled)
+        else if(type===32) crawlTarget('dm', delay, vtype, setCurrent, setBtnDisabled)
         
         // favo update
-        else if(type==40) crawlFavo('all', delay, setCurrent, setBtnDisabled)
-        else if(type==41) crawlFavo('gf', delay, setCurrent, setBtnDisabled)
-        else if(type==42) crawlFavo('dm', delay, setCurrent, setBtnDisabled)
+        else if(type===40) crawlFavo('all', delay, setCurrent, setBtnDisabled)
+        else if(type===41) crawlFavo('gf', delay, setCurrent, setBtnDisabled)
+        else if(type===42) crawlFavo('dm', delay, setCurrent, setBtnDisabled)
         
         // board update
-        else if(type==51) crawlBoard('gf', setCurrent, setBtnDisabled)
-        else if(type==52) crawlBoard('dm', setCurrent, setBtnDisabled)
+        else if(type===51) crawlBoard('gf', setCurrent, setBtnDisabled)
+        else if(type===52) crawlBoard('dm', setCurrent, setBtnDisabled)
 
         // wrong param
         else console.log("[Skill Navigator] Wrong parameter passed")
@@ -73,8 +72,8 @@ const Crawler = () => {
             v.checked ? category.push(parseInt(v.value)) : console.log('')
         })
         
-        if(type==1) crawlAllSong('gf', delay, true, category, vtype, setCurrent, setBtnDisabled)
-        else if(type==2) crawlAllSong('dm', delay, true, category, vtype, setCurrent, setBtnDisabled)
+        if(type===1) crawlAllSong('gf', delay, true, category, vtype, setCurrent, setBtnDisabled)
+        else if(type===2) crawlAllSong('dm', delay, true, category, vtype, setCurrent, setBtnDisabled)
 
         setBtnDisabled(true)
     }
