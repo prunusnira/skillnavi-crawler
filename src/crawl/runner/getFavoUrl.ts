@@ -26,7 +26,7 @@ const getFavoUrl = async (
             break;
     }
 
-    if(pageUrl !== '') {
+    if(pageUrl === '') {
         alert((text.crawler.favorite.pageError as any)[language.setLang()]);
         return [];
     }
