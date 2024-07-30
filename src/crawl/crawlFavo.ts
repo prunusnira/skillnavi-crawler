@@ -1,5 +1,4 @@
 import crawlFromUrlList from "./crawlFromUrlList"
-import UrlData from "./data/urlData"
 import getFavoUrl from "./runner/getFavoUrl"
 
 const crawlFavo = (
