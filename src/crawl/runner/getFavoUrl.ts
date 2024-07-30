@@ -10,7 +10,7 @@ const getFavoUrl = async (
     gtype: string,
     setCurrent: (s: string) => void,
 ) => {
-    let pageUrl;
+    let pageUrl: string;
     switch(page) {
         case 1:
             pageUrl = `${CommonData.favoUrl1}?gtype=${gtype}`;
@@ -41,7 +41,7 @@ const getFavoUrl = async (
     $('.text_link').each((idx, val) => {
         linklist.push({
             targetTo: $(val).attr('href')!,
-            ref: `${CommonData.favoUrl}?gtype=${gtype}`
+            ref: pageUrl,
         })
         console.log("[Collecting URL] "+ idx +" checked")
     })
