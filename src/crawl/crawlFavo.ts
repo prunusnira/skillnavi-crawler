@@ -1,36 +1,27 @@
-import crawlFromUrlList from "./crawlFromUrlList"
-import getFavoUrl from "./runner/getFavoUrl"
+import crawlFromUrlList from './crawlFromUrlList';
+import getFavoUrl from './runner/getFavoUrl';
+import { CralwerFavoUrl, CrawlerFavoParams } from '../feature/crawler/component/CrawlerImport.type';
+import UrlData from './data/urlData';
 
-const crawlFavo = (
-    page: number,
-    gtype: string,
-    delay: number,
-    setCurrent: (s: string) => void,
-    setBtnDisabled: (b: boolean) => void
+const crawlFavo = async (
+    {
+        page,
+        gtype,
+        delay,
+        setCurrent,
+        setBtnDisabled,
+    }: CrawlerFavoParams,
 ) => {
     // url 리스트를 가져온 후 url 목록에 대한 곡 파싱 수행
-    collectFavoUrl(page, gtype, setCurrent)!
-        .then(list => {
-            crawlFromUrlList(list, delay, 0, setCurrent, setBtnDisabled)
-        })
-}
-
-const collectFavoUrl = async (
-    page: number,
-    gtype: string,
-    setCurrent: (s: string) => void
-) => {
-    // getFavoUrl에서 url목록 수집
-    if (gtype === 'all') {
-        const gfUrl = await getFavoUrl(page, 'gf', setCurrent);
-        const dmUrl = await getFavoUrl(page, 'dm', setCurrent);
-        return [
-            ...gfUrl,
-            ...dmUrl,
-        ];
-    } else {
-        return await getFavoUrl(page, gtype, setCurrent);
+    const urls: UrlData[] = [];
+    if (gtype === 'all' || gtype === 'gf') {
+        urls.push(...await getFavoUrl({ page, gtype: 'gf', setCurrent }));
     }
-}
+    if (gtype === 'all' || gtype === 'dm') {
+        urls.push(...await getFavoUrl({ page, gtype: 'dm', setCurrent }));
+    }
 
-export default crawlFavo
+    crawlFromUrlList({ urls, delay, version: 0, setCurrent, setBtnDisabled });
+};
+
+export default crawlFavo;

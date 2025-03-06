@@ -1,25 +1,32 @@
 import axios from "axios";
 import * as cheerio from 'cheerio';
-import CommonData from "../../function/commonData";
 import UrlData from "../data/urlData";
 import language from "../../function/language";
 import text from '../../text/text';
 
-const getFavoUrl = async (
+interface Params {
     page: number,
     gtype: string,
     setCurrent: (s: string) => void,
+}
+
+const getFavoUrl = async (
+    {
+        page,
+        gtype,
+        setCurrent,
+    }: Params
 ) => {
     let pageUrl: string;
     switch(page) {
         case 1:
-            pageUrl = `${CommonData.favoUrl1}?gtype=${gtype}`;
+            pageUrl = window.sinUrl.find(url => url.urltype === 'favo')?.url ?? '';
             break;
         case 2:
-            pageUrl = `${CommonData.favoUrl2}?gtype=${gtype}`;
+            pageUrl = window.sinUrl.find(url => url.urltype === 'favo2')?.url ?? '';
             break;
         case 3:
-            pageUrl = `${CommonData.favoUrl3}?gtype=${gtype}`;
+            pageUrl = window.sinUrl.find(url => url.urltype === 'favo3')?.url ?? '';
             break;
         default:
             pageUrl = '';
@@ -31,11 +38,11 @@ const getFavoUrl = async (
         return [];
     }
 
-    const rtn = await axios.get(pageUrl);
+    const html = await axios.get(`${pageUrl}?gtype=${gtype}`);
 
     // get all link to each song -> run get song info
-    const $ = cheerio.load(rtn.data)
-    const linklist = new Array<UrlData>()
+    const $ = cheerio.load(html.data)
+    const linklist: UrlData[] = [];
 
     setCurrent("Favorite Folder URL Collecting...")
     $('.text_link').each((idx, val) => {

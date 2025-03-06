@@ -1,52 +1,66 @@
-import axios from "axios"
-import crawlMusic from "./crawlMusic"
-import CrawlData from "./data/crawlData"
-import UrlData from "./data/urlData"
-import upload from "./upload"
+import axios from 'axios';
+import crawlMusic from './crawlMusic';
+import CrawlData from './data/crawlData';
+import UrlData from './data/urlData';
+import upload from './upload';
+import { CrawlerUrlList, CrawlerUrlRunner } from '../feature/crawler/component/CrawlerImport.type';
 
 const crawlFromUrlList = (
-    urls: Array<UrlData>,
-    delay: number,
-    vtype: number,
-    setCurrent: (s: string) => void,
-    setBtnDisabled: (b: boolean) => void
+    {
+        urls,
+        delay,
+        version,
+        setCurrent,
+        setBtnDisabled,
+    }: CrawlerUrlList,
 ) => {
     // 순서
     // 1. ref로 이동
     // 2. targetTo로 이동해서 데이터 수집
     const skillData: CrawlData = {
-        crawlToken: (window as any).crawlToken,
-        musicData: []
-    }
-    runUrlIndex(skillData, urls, 0, delay, vtype, setCurrent, setBtnDisabled)
-}
+        uid: (window as any).sinUid,
+        version,
+        musicData: [],
+    };
+    runUrlIndex({ skillData, urls, index: 0, delay, version, setCurrent, setBtnDisabled });
+};
 
-const runUrlIndex = (
-    skillData: CrawlData,
-    urls: Array<UrlData>,
-    index: number,
-    delay: number,
-    vtype: number,
-    setCurrent: (s: string) => void,
-    setBtnDisabled: (b: boolean) => void
+const runUrlIndex = async (
+    {
+        skillData,
+        urls,
+        delay,
+        version,
+        index,
+        setBtnDisabled,
+        setCurrent,
+    }: CrawlerUrlRunner,
 ) => {
-    if(index < urls.length) {
-        const current = urls[index]
-        return axios.get(current.ref)
-        .then(_ => {
-            return crawlMusic(current.targetTo, setCurrent)
-            .then(data => {
-                skillData.musicData.push(data)
-                setTimeout(() =>
-                    runUrlIndex(skillData, urls, ++index, delay, vtype, setCurrent, setBtnDisabled)
-                , delay)
-            })
-        })
-    }
-    else {
-        // 완성된 데이터 업로드
-        upload(JSON.stringify(skillData), 'skill', vtype, setCurrent, setBtnDisabled)
-    }
-}
+    if (index < urls.length) {
+        const current = urls[index];
 
-export default crawlFromUrlList
+        // 이전페이지로 되돌아가기
+        await axios.get(current.ref);
+
+        // 새 곡 데이터 페이지로 이동
+        const data = await crawlMusic(current.targetTo, setCurrent);
+
+        skillData.musicData.push(data);
+        setTimeout(async () => {
+            await runUrlIndex({
+                skillData,
+                urls,
+                index: index + 1,
+                delay,
+                version,
+                setCurrent,
+                setBtnDisabled,
+            });
+        }, delay);
+    } else {
+        // 완성된 데이터 업로드
+        upload({ json: JSON.stringify(skillData), type: 'skill', version, setCurrent, setBtnDisabled });
+    }
+};
+
+export default crawlFromUrlList;

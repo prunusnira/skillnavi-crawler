@@ -1,106 +1,58 @@
-import crawlProfile from "./crawlProfile"
-import CrawlData from "./data/crawlData"
-import getTargetSimple from "./runner/getTargetSimple"
-import upload from "./upload"
+import crawlProfile from './crawlProfile';
+import CrawlData from './data/crawlData';
+import getTargetSimple from './runner/getTargetSimple';
+import upload from './upload';
+import { CrawlerTargetParams } from '../feature/crawler/component/CrawlerImport.type';
 
-const crawlTargetQuick = (
-    gtype: string,
-    delay: number,
-    vtype: number,
-    setCurrent: (s: string) => void,
-    setBtnDisabled: (b: boolean) => void
+const crawlTargetQuick = async (
+    {
+        gtype,
+        delay,
+        version,
+        setCurrent,
+        setBtnDisabled,
+    }: CrawlerTargetParams,
 ) => {
     const skillData: CrawlData = {
-        crawlToken: (window as any).crawlToken,
-        musicData: []
+        uid: (window as any).sinUid,
+        version,
+        musicData: [],
+    };
+
+    console.log('[Simple update] Collecting data');
+    setCurrent('Collecting Data... Initiating');
+
+    if (gtype === 'all' || gtype === 'gf') {
+        setCurrent('Collecting URL... GF Hot');
+        const gfHot = await getTargetSimple({ gtype: 'gf', stype: 1, version });
+        gfHot.forEach(d => {
+            skillData.musicData.push(d);
+        });
+
+
+        setCurrent('Collecting URL... GF Other');
+        const gfOther = await getTargetSimple({ gtype: 'gf', stype: 0, version });
+        gfOther.forEach(d => {
+            skillData.musicData.push(d);
+        });
     }
 
-    console.log("[Simple update] Collecting data")
-    setCurrent('Collecting Data... Initiating')
+    if (gtype === 'all' || gtype === 'dm') {
+        setCurrent('Collecting URL... DM Hot');
+        const dmHot = await getTargetSimple({ gtype: 'dm', stype: 1, version });
+        dmHot.forEach(d => {
+            skillData.musicData.push(d);
+        });
 
-    if(gtype === 'all') {
-        setCurrent('Collecting URL... GF Hot')
-        getTargetSimple('gf', 1, vtype)
-        .then(data => {
-            data.forEach(d => {
-                skillData.musicData.push(d)
-            })
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... GF Other')
-            return getTargetSimple('gf', 0, vtype)
-        })
-        .then(data => {
-            data.forEach(d => {
-                skillData.musicData.push(d)
-            })
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... DM Hot')
-            return getTargetSimple('dm', 1, vtype)
-        })
-        .then(data => {
-            data.forEach(d => {
-                skillData.musicData.push(d)
-            })
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... DM Other')
-            return getTargetSimple('dm', 0, vtype)
-        })
-        .then(data => {
-            data.forEach(d => {
-                skillData.musicData.push(d)
-            })
-        })
-        .then(_ => {
-            upload(JSON.stringify(skillData), 'simple', vtype, setCurrent, setBtnDisabled)
-            crawlProfile(vtype, setCurrent, setBtnDisabled)
-        })
+        setCurrent('Collecting URL... DM Other');
+        const dmOther = await getTargetSimple({ gtype: 'dm', stype: 0, version });
+        dmOther.forEach(d => {
+            skillData.musicData.push(d);
+        });
     }
-    else if(gtype === 'gf') {
-        setCurrent('Collecting URL... GF Hot')
-        getTargetSimple('gf', 1, vtype)
-        .then(data => {
-            data.forEach(d => {
-                skillData.musicData.push(d)
-            })
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... GF Other')
-            return getTargetSimple('gf', 0, vtype)
-        })
-        .then(data => {
-            data.forEach(d => {
-                skillData.musicData.push(d)
-            })
-        })
-        .then(_ => {
-            upload(JSON.stringify(skillData), 'simple', vtype, setCurrent, setBtnDisabled)
-            crawlProfile(vtype, setCurrent, setBtnDisabled)
-        })
-    }
-    else if(gtype === 'dm') {
-        setCurrent('Collecting URL... DM Hot')
-        getTargetSimple('dm', 1, vtype)
-        .then(data => {
-            data.forEach(d => {
-                skillData.musicData.push(d)
-            })
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... DM Other')
-            return getTargetSimple('dm', 0, vtype)
-        })
-        .then(data => {
-            data.forEach(d => {
-                skillData.musicData.push(d)
-            })
-        })
-        .then(_ => {
-            upload(JSON.stringify(skillData), 'simple', vtype, setCurrent, setBtnDisabled)
-        })
-    }
-}
 
-export default crawlTargetQuick
+    upload({ json: JSON.stringify(skillData), type: 'simple', version, setCurrent, setBtnDisabled });
+    crawlProfile({ version, setCurrent, setBtnDisabled });
+};
+
+export default crawlTargetQuick;

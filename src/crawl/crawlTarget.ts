@@ -1,97 +1,43 @@
-import crawlFromUrlList from "./crawlFromUrlList"
-import UrlData from "./data/urlData"
-import getTargetUrl from "./runner/getTargetUrl"
+import crawlFromUrlList from './crawlFromUrlList';
+import UrlData from './data/urlData';
+import getTargetUrl from './runner/getTargetUrl';
+import { CrawlerTargetParams, CrawlerTargetUrl } from '../feature/crawler/component/CrawlerImport.type';
 
-const crawlTarget = (
-    gtype: string,
-    delay: number,
-    vtype: number,
-    setCurrent: (s: string) => void,
-    setBtnDisabled: (b: boolean) => void
+const crawlTarget = async (
+    {
+        gtype,
+        delay,
+        version,
+        setCurrent,
+        setBtnDisabled,
+    }: CrawlerTargetParams,
 ) => {
     // url 리스트를 가져온 후 url 목록에 대한 곡 파싱 수행
-    setCurrent('Collecting URL... Initiating')
-    collectTargetUrl(gtype, vtype, setCurrent)!
-    .then(list => {
-        setCurrent('Collecting Data... Initiating')
-        crawlFromUrlList(list, delay, vtype, setCurrent, setBtnDisabled)
-    })
-}
+    setCurrent('Collecting URL... Initiating');
 
-const collectTargetUrl = (
-    gtype: string,
-    vtype: number,
-    setCurrent: (s: string) => void
-) => {
-    // getTargetUrl에서 url 목록 수집
-    let urlList = new Array<UrlData>()
+    const urls: UrlData[] = [];
 
-    if(gtype === 'all') {
-        setCurrent('Collecting URL... GF Hot')
-        return getTargetUrl('gf', 1, vtype)
-        .then(list => {
-            urlList = [...urlList, ...list]
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... GF Other')
-            return getTargetUrl('gf', 0, vtype)
-        })
-        .then(list => {
-            urlList = [...urlList, ...list]
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... DM Hot')
-            return getTargetUrl('dm', 1, vtype)
-        })
-        .then(list => {
-            urlList = [...urlList, ...list]
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... DM Other')
-            return getTargetUrl('dm', 0, vtype)
-        })
-        .then(list => {
-            urlList = [...urlList, ...list]
-        })
-        .then(_ => {
-            return urlList
-        })
-    }
-    else if(gtype === 'gf') {
-        setCurrent('Collecting URL... GF Hot')
-        return getTargetUrl('gf', 1, vtype)
-        .then(list => {
-            urlList = [...urlList, ...list]
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... GF Other')
-            return getTargetUrl('gf', 0, vtype)
-        })
-        .then(list => {
-            urlList = [...urlList, ...list]
-        })
-        .then(_ => {
-            return urlList
-        })
-    }
-    else if(gtype === 'dm') {
-        setCurrent('Collecting URL... DM Hot')
-        return getTargetUrl('dm', 1, vtype)
-        .then(list => {
-            urlList = [...urlList, ...list]
-        })
-        .then(_ => {
-            setCurrent('Collecting URL... DM Other')
-            return getTargetUrl('dm', 0, vtype)
-        })
-        .then(list => {
-            urlList = [...urlList, ...list]
-        })
-        .then(_ => {
-            return urlList
-        })
-    }
-    return null
-}
+    if (gtype === 'all' || gtype === 'gf') {
+        setCurrent('Collecting URL... GF Hot');
+        const gfHotUrl = await getTargetUrl({ gtype: 'gf', stype: 1, version });
 
-export default crawlTarget
+        setCurrent('Collecting URL... GF Other');
+        const gfOtherUrl = await getTargetUrl({ gtype: 'gf', stype: 0, version });
+
+        urls.push(...gfHotUrl, ...gfOtherUrl);
+    }
+    if (gtype === 'all' || gtype === 'dm') {
+        setCurrent('Collecting URL... DM Hot');
+        const dmHotUrl = await getTargetUrl({ gtype: 'dm', stype: 1, version });
+
+        setCurrent('Collecting URL... DM Other');
+        const dmOtherUrl = await getTargetUrl({ gtype: 'dm', stype: 0, version });
+
+        urls.push(...dmHotUrl, ...dmOtherUrl);
+    }
+
+    setCurrent('Collecting Data... Initiating');
+    crawlFromUrlList({ urls, delay, version, setCurrent, setBtnDisabled });
+};
+
+export default crawlTarget;

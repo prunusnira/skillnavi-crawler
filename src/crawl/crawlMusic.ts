@@ -1,14 +1,12 @@
-import axios from "axios"
-import onSongSuccess from "./onSongSuccess"
+import axios from 'axios';
+import onSongSuccess from './onSongSuccess';
 
-const crawlMusic = (
+const crawlMusic = async (
     url: string,
-    setCurrent: (s: string) => void
+    setCurrent: (s: string) => void,
 ) => {
-    return axios.get(url)
-    .then(rtn => {
-        return onSongSuccess(rtn.data, setCurrent)
-    })
-}
+    const html = await axios.get(url);
+    return onSongSuccess(html.data, setCurrent);
+};
 
-export default crawlMusic
+export default crawlMusic;

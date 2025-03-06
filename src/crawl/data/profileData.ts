@@ -17,8 +17,8 @@ type Profile = {
     dexclv: string,
     gexcnum: string,
     dexcnum: string,
-
     crawlToken: string,
+    targetVersion: number,
 }
 
 export default Profile

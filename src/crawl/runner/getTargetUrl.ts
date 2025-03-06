@@ -1,29 +1,41 @@
-import axios from "axios"
-import * as cheerio from 'cheerio'
-import CommonData from "../../function/commonData"
-import UrlData from "../data/urlData"
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import UrlData from '../data/urlData';
 
-const getTargetUrl = (
+interface Params {
     gtype: string,
     stype: number,
-    vtype: number
-) => {
-    return axios.get(`${CommonData.skillUrl[vtype]}?gtype=${gtype}&stype=${stype}`)
-    .then(rtn => {
-        // get all link to each song -> run get song info
-        const $ = cheerio.load(rtn.data)
-        const linklist = new Array<UrlData>()
-
-        $('.text_link').each((idx, val) => {
-            linklist.push({
-                targetTo: $(val).attr('href')!,
-                ref: `${CommonData.skillUrl[vtype]}?gtype=${gtype}&stype=${stype}`
-            })
-            console.log("[Collecting URL] "+ idx +" checked")
-        })
-        
-        return linklist
-    })
+    version: number
 }
 
-export default getTargetUrl
+const getTargetUrl = async (
+    {
+        gtype,
+        stype,
+        version,
+    }: Params,
+) => {
+    const url = window.sinUrl.find(url => url.version === version && url.urltype === 'skill')?.url;
+
+    if(!url) {
+        return [] as UrlData[];
+    }
+
+    const html = await axios.get(`${url}?gtype=${gtype}&stype=${stype}`);
+
+    // get all link to each song -> run get song info
+    const $ = cheerio.load(html.data);
+    const linklist: UrlData[] = [];
+
+    $('.text_link').each((idx, val) => {
+        linklist.push({
+            targetTo: $(val).attr('href')!,
+            ref: `${url}?gtype=${gtype}&stype=${stype}`,
+        });
+        console.log('[Collecting URL] ' + idx + ' checked');
+    });
+
+    return linklist;
+};
+
+export default getTargetUrl;

@@ -1,8 +1,9 @@
-import MusicData from "./musicData"
+import MusicData from './musicData';
 
 type CrawlData = {
-    crawlToken: string,
-    musicData: Array<MusicData>
+    uid: string,
+    version: number,
+    musicData: MusicData[],
 }
 
-export default CrawlData
+export default CrawlData;

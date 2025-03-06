@@ -1,17 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import Crawler from './feature/crawler/component/Crawler';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('crawler-root')
+const root = ReactDOM.createRoot(document.getElementById('crawler-root')!);
+root.render(
+    <React.StrictMode>
+        <QueryClientProvider client={new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: 1,
+                    refetchOnWindowFocus: false,
+                },
+            },
+        })}>
+            <Crawler />
+        </QueryClientProvider>
+    </React.StrictMode>,
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
