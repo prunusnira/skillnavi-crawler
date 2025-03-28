@@ -20,9 +20,10 @@ const useCrawerRunner = () => {
     };
 
     const crawlRunner = async (type: number) => {
-        console.log(version, user);
-        if (version === undefined || user === undefined) return;
-        console.log('update runner started');
+        if (version === undefined || user === undefined) {
+            alert('Can not run updater due to no user data specified')
+            return;
+        }
 
         switch (type) {
             case 0:
@@ -83,7 +84,6 @@ const useCrawerRunner = () => {
                 crawlTarget({ gtype: 'gf', delay, version, setCurrent, setBtnDisabled });
                 break;
             case 32:
-                console.log('cralwer 32');
                 crawlTarget({ gtype: 'dm', delay, version, setCurrent, setBtnDisabled });
                 break;
 

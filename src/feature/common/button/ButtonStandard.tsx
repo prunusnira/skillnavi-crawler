@@ -13,7 +13,7 @@ const ButtonStandard = ({ iconUrl, text, bgColor, onClick, size, disabled }: Pro
             className={
                 'flex-center bg-blue-500 text-white px-[16px] py-[8px] rounded-xl cursor-pointer'
             }
-            style={{ backgroundColor: bgColor }}
+            style={{ backgroundColor: disabled ? 'lightblue' : bgColor }}
             onClick={() => {
                 if (!disabled && onClick) {
                     onClick();

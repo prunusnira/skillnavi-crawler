@@ -12,6 +12,7 @@ export interface CrawlerAtom {
 
     // 버전 타입
     version?: number;
+    latest?: number;
 
     // 사용자 정보
     user?: Profile;

@@ -30,7 +30,7 @@ const Header = () => {
 
             {/* 버전 선택 메뉴 */}
             <section className="flex gap-[4px]">
-                {availableVersion?.reverse().map((version) => (
+                {availableVersion?.map((version) => (
                     <ButtonRounded
                         text={version.full}
                         isSelected={version.id === env.version}

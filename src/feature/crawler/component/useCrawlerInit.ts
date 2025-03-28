@@ -62,7 +62,7 @@ const useCrawlerInit = () => {
 
     useEffect(() => {
         if (latest) {
-            setConfig({ version: latest });
+            setConfig({ version: latest, latest });
         }
     }, [latest]);
 
